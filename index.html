@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Days Since Carl Has Leaked an API Key</title>
+    <link rel="icon" type="image/x-icon" href="carl-sm.jpg">
+    <style>
+      @font-face {
+        font-family: 'DSEG7 Classic Bold';
+        src: local('DSEG7 Classic Bold'), url('DSEG7Classic-Bold.ttf');
+        font-weight: bold;
+        font-display: swap;
+      }
+
+      html {
+        background: black;
+        color: white;
+        font-family: arial;
+        font-size: 5rem;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100svh;
+        margin: 0; /* who thought margin on a default element was a good idea */
+      }
+
+      .segment {
+        font-family: 'DSEG7 Classic Bold', monospace;
+        color: red;
+        text-align: end;
+        vertical-align: middle;
+      }
+
+      @keyframes growAnimation {
+        0% {
+          transform: scale(.1) translate(-150%, -150%);
+          opacity: .01;
+        }
+        100% {
+          transform: scale(1) translate(-50%, -50%);
+          opacity: .1;
+        }
+      }
+
+      #carl {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: -1;
+        min-height: 50%;
+        min-width: 50%;
+        opacity: .1;
+        animation: growAnimation 10800s linear; /* 10800s = 3 hours */
+      }
+
+    </style>
+
+    <script>
+
+      const lastInfraction = '2023-06-13';
+      
+      // function courtesy of ChatGPT
+      function daysSinceDate(inputDateStr) {
+        const inputDate = new Date(inputDateStr);
+        const currentDate = new Date();
+        const timeDifference = currentDate - inputDate;
+        const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
+        return Math.round(daysDifference);
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('#days').innerHTML = daysSinceDate(lastInfraction);
+      });
+      
+    </script>
+  </head>
+
+  <!-- nothing to see here :P -->
+
+  <body>
+    <div>
+      Days since Carl has leaked an API key:&nbsp;<span id="days" class="segment">&#8230;</span>
+    </div>
+    <img id="carl" src="carl-md.jpg" />
+  </body>
+</html>
