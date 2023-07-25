@@ -27,6 +27,10 @@
         margin: 0; /* who thought margin on a default element was a good idea */
       }
 
+      .center {
+        text-align: center;
+      }
+
       .segment {
         font-family: 'DSEG7 Classic Bold', monospace;
         color: red;
@@ -72,8 +76,14 @@
         return Math.round(daysDifference);
       }
 
-      document.addEventListener('DOMContentLoaded', () => {
+      function updateDays() {
         document.querySelector('#days').innerHTML = daysSinceDate(lastInfraction);
+      }
+
+      document.addEventListener('DOMContentLoaded', () => {
+        updateDays();
+
+        setInterval(updateDays, 60000); // every minute
       });
       
     </script>
@@ -82,9 +92,9 @@
   <!-- nothing to see here :P -->
 
   <body>
-    <div>
+    <div class="center">
       Days since Carl has leaked an API key:&nbsp;<span id="days" class="segment">&#8230;</span>
     </div>
-    <img id="carl" src="carl-md.jpg" />
+    <img id="carl" src="carl-sm.jpg" />
   </body>
 </html>
