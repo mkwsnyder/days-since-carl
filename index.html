@@ -115,13 +115,16 @@
           }
 
           const delta = timeStamp - lastFrame;
-          console.log(delta);
           lastFrame = timeStamp;
 
           x += xVel * delta;
           y += yVel * delta;
 
-          console.log(x, y);
+          // yes I know this is also getting checked below and the checks should be merged, but have you considered
+          if (x >= window.innerWidth - imageSize) x = window.innerWidth - imageSize;
+          if (x <= 0) x = 0;
+          if (y >= window.innerHeight - imageSize) y = window.innerHeight - imageSize;
+          if (y <= 0) y = 0;
 
           if (x >= window.innerWidth - imageSize || x <= 0) {
             xVel = -xVel;
@@ -146,8 +149,8 @@
 
         dvd = document.querySelector('#dvd');
 
-        x = Math.round(Math.random() * window.innerWidth);
-        y = Math.round(Math.random() * window.innerHeight);
+        x = Math.round(Math.random() * window.innerWidth - imageSize);
+        y = Math.round(Math.random() * window.innerHeight - imageSize);
 
         xVel = speed;
         yVel = speed;
