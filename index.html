@@ -16,7 +16,8 @@
         background: black;
         color: white;
         font-family: arial;
-        font-size: 5rem;
+        font-size: 3rem;
+        overflow: hidden;
       }
 
       body {
@@ -41,11 +42,11 @@
       @keyframes growAnimation {
         0% {
           transform: scale(.1) translate(-150%, -150%);
-          opacity: .01;
+          opacity: .03;
         }
         100% {
           transform: scale(1) translate(-50%, -50%);
-          opacity: .1;
+          opacity: .12;
         }
       }
 
@@ -54,11 +55,18 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        z-index: -1;
+        z-index: -2;
         min-height: 50%;
         min-width: 50%;
-        opacity: .1;
-        animation: growAnimation 10800s linear; /* 10800s = 3 hours */
+        opacity: .12;
+        animation: growAnimation 60s linear; /* 10800s = 3 hours */
+      }
+
+      #dvd {
+        position: absolute;
+        left: 0;
+        top: 0;
+        z-index: -1;
       }
 
     </style>
@@ -80,12 +88,74 @@
         document.querySelector('#days').innerHTML = daysSinceDate(lastInfraction);
       }
 
-      document.addEventListener('DOMContentLoaded', () => {
+      let lastFrame;
+      let x = 0;
+      let y = 0;
+
+      let xVel = 0;
+      let yVel = 0;
+
+      const speed = .2;
+      const imageSize = 232;
+
+      let hue = 30;
+      // TODO: use image width in calcs so it doesn't flow off right and bottom
+
+      let dvd;
+
+      function updateHue() {
+        hue += Math.round(Math.random() * 30) + 30;
+        if (hue > 360) hue - 360;
+        dvd.style.filter = `hue-rotate(${hue}deg) saturate(200%)`;
+      }
+      
+      function animateDVD(timeStamp) {
+          if (!lastFrame) {
+            lastFrame = timeStamp;
+          }
+
+          const delta = timeStamp - lastFrame;
+          console.log(delta);
+          lastFrame = timeStamp;
+
+          x += xVel * delta;
+          y += yVel * delta;
+
+          console.log(x, y);
+
+          if (x >= window.innerWidth - imageSize || x <= 0) {
+            xVel = -xVel;
+            updateHue();
+          };
+          if (y >= window.innerHeight - imageSize || y <= 0) {
+            yVel = -yVel;
+            updateHue();
+          };
+
+          dvd.style.transform = `translate(${x}px, ${y}px)`;
+
+          // if (dvd.style.left < 0) xVel = -xVel;
+          // if (dvd.style.top < 0) yVel = -yVel;
+          window.requestAnimationFrame(animateDVD);
+      }
+
+      window.onload = function() {
         updateDays();
 
         setInterval(updateDays, 60000); // every minute
-      });
-      
+
+        dvd = document.querySelector('#dvd');
+
+        x = Math.round(Math.random() * window.innerWidth);
+        y = Math.round(Math.random() * window.innerHeight);
+
+        xVel = speed;
+        yVel = speed;
+
+        // while (true)
+        window.requestAnimationFrame(animateDVD);
+      }
+
     </script>
   </head>
 
@@ -96,5 +166,6 @@
       Days since Carl has leaked an API key:&nbsp;<span id="days" class="segment">&#8230;</span>
     </div>
     <img id="carl" src="carl-sm.jpg" />
+    <img id="dvd" src="carl-md.jpg" />
   </body>
 </html>
