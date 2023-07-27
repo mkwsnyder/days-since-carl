@@ -62,19 +62,41 @@
         animation: growAnimation 60s linear; /* 10800s = 3 hours */
       }
 
+      @keyframes dvd {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
       #dvd {
+        animation: dvd 60s linear infinite;
+      }
+        
+      #dvd-wrapper {
         position: absolute;
         left: 0;
         top: 0;
         z-index: -1;
       }
 
+      #infractions {
+        font-size: .5em;
+      }
+
     </style>
 
     <script>
 
+      const infractions = [
+        '2023-06-13',
+        '2023-07-27'
+      ]
+
       // const lastInfraction = '2023-06-13';
-      const lastInfraction = '2023-07-27';
+      const lastInfraction = infractions[infractions.length - 1];
       
       // function courtesy of ChatGPT
       function daysSinceDate(inputDateStr) {
@@ -99,7 +121,7 @@
       let yVel = 0;
 
       const speed = .1;
-      const imageSize = 232;
+      const imageSize = 223;
 
       let hue = 30;
       // TODO: use image width in calcs so it doesn't flow off right and bottom
@@ -145,12 +167,23 @@
           window.requestAnimationFrame(animateDVD);
       }
 
+      function listInfractions() {
+        let str = '';
+
+        for (let e of infractions.reverse()) {
+          str += `<div>Carl leaked an API key on: ${e}</div>`
+        }
+        // don't @me for this implementation
+        document.querySelector('#infractions').innerHTML = str;
+      }
+
       window.onload = function() {
         updateDays();
+        listInfractions();
 
         setInterval(updateDays, 60000); // every minute
 
-        dvd = document.querySelector('#dvd');
+        dvd = document.querySelector('#dvd-wrapper');
 
         x = Math.round(Math.random() * window.innerWidth - imageSize);
         y = Math.round(Math.random() * window.innerHeight - imageSize);
@@ -170,8 +203,13 @@
   <body>
     <div class="center">
       Days since Carl has leaked an API key:&nbsp;<span id="days" class="segment">&#8230;</span>
+      <br />
+      <br />
+      <div id="infractions"></div>
     </div>
     <img id="carl" src="carl-sm.jpg" />
-    <img id="dvd" src="carl-md.jpg" />
+    <div id="dvd-wrapper">
+      <img id="dvd" src="carl-md.png" />
+    </div>
   </body>
 </html>
