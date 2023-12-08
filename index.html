@@ -92,7 +92,8 @@
 
       const infractions = [
         '2023-06-13',
-        '2023-07-27'
+        '2023-07-27',
+        '2023-11-28',
       ]
 
       // const lastInfraction = '2023-06-13';
@@ -104,7 +105,7 @@
         const currentDate = new Date();
         const timeDifference = currentDate - inputDate;
         const daysDifference = timeDifference / (1000 * 60 * 60 * 24);
-        return Math.round(daysDifference - 1);
+        return Math.floor(daysDifference - 1);
       }
 
       function updateDays() {
@@ -129,7 +130,7 @@
       let dvd;
 
       function updateHue() {
-        hue += Math.round(Math.random() * 30) + 30;
+        hue += Math.floor(Math.random() * 30) + 30;
         if (hue > 360) hue - 360;
         dvd.style.filter = `hue-rotate(${hue}deg) saturate(200%)`;
       }
@@ -185,8 +186,8 @@
 
         dvd = document.querySelector('#dvd-wrapper');
 
-        x = Math.round(Math.random() * window.innerWidth - imageSize);
-        y = Math.round(Math.random() * window.innerHeight - imageSize);
+        x = Math.floor(Math.random() * window.innerWidth - imageSize);
+        y = Math.floor(Math.random() * window.innerHeight - imageSize);
 
         xVel = speed;
         yVel = speed;
